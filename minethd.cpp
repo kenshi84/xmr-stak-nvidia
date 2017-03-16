@@ -23,6 +23,7 @@
 
 #include <assert.h>
 #include <cmath>
+#include <cstdlib>
 #include <chrono>
 #include <thread>
 #include "console.h"
@@ -39,10 +40,12 @@ void thd_setaffinity(std::thread::native_handle_type h, uint64_t cpu_id)
 
 void thd_setaffinity(std::thread::native_handle_type h, uint64_t cpu_id)
 {
+#ifndef __APPLE__
 	cpu_set_t mn;
 	CPU_ZERO(&mn);
 	CPU_SET(cpu_id, &mn);
 	pthread_setaffinity_np(h, sizeof(cpu_set_t), &mn);
+#endif
 }
 #endif // _WIN32
 
